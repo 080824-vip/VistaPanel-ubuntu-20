@@ -1,7 +1,12 @@
 #!/bin/bash
 
+# Thêm kho lưu trữ của Ondřej Surý
+sudo apt update
+sudo apt install -y software-properties-common
+sudo add-apt-repository ppa:ondrej/php -y
+
 # Cập nhật hệ thống và cài đặt các gói cần thiết
-sudo apt update && sudo apt install -y     php8.1     php8.1-mysql     php8.1-openssl     php8.1-pdo     php8.1-mbstring     php8.1-tokenizer     php8.1-xml     php8.1-ctype     php8.1-json     php8.1-bcmath     php8.1-imap     php8.1-iconv     php8.1-zip     php8.1-fileinfo     php8.1-fpm     php8.1-cli     php8.1-curl     php8.1-gd     php8.1-intl     php8.1-soap     php8.1-xmlrpc     php8.1-xsl     php8.1-ldap     php8.1-redis     php8.1-memcached     php8.1-sqlite3     php8.1-odbc     php8.1-pgsql     php8.1-sybase     php8.1-tidy     php8.1-xmlreader     php8.1-xmlwriter     php8.1-xdebug     php8.1-bz2     php8.1-dba     php8.1-enchant     php8.1-gmp     php8.1-imagick     php8.1-interbase     php8.1-mcrypt     php8.1-pspell     php8.1-recode     php8.1-snmp     php8.1-xsl
+sudo apt update && sudo apt install -y     php8.1     php8.1-mysql     php8.1-common     php8.1-xml     php8.1-cli     php8.1-fpm     php8.1-curl     php8.1-gd     php8.1-mbstring     php8.1-zip     php8.1-bcmath     php8.1-imap     php8.1-intl     php8.1-soap     php8.1-xmlrpc     php8.1-xsl     php8.1-ldap     php8.1-redis     php8.1-memcached     php8.1-sqlite3     php8.1-odbc     php8.1-pgsql     php8.1-sybase     php8.1-tidy     php8.1-xmlreader     php8.1-xmlwriter     php8.1-xdebug     php8.1-bz2     php8.1-dba     php8.1-enchant     php8.1-gmp     php8.1-imagick     php8.1-interbase     php8.1-mcrypt     php8.1-pspell     php8.1-recode     php8.1-snmp
 
 # Cấu hình allow_url_fopen
 sudo sed -i 's/;allow_url_fopen = On/allow_url_fopen = On/' /etc/php/8.1/cli/php.ini
