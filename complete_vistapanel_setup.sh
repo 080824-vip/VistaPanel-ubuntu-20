@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# Đường dẫn mặc định tới thư mục VistaPanel
+VISTAPANEL_PATH="/var/www/vistapanel"
+
+# Kiểm tra xem thư mục có tồn tại không
+if [ ! -d "$VISTAPANEL_PATH" ]; then
+    echo "Thư mục $VISTAPANEL_PATH không tồn tại. Vui lòng tạo nó trước khi chạy script."
+    exit 1
+fi
+
 # Cài đặt MySQL và Nginx
 sudo apt update
 sudo apt install -y mysql-server nginx
@@ -8,9 +17,6 @@ sudo apt install -y mysql-server nginx
 sudo systemctl restart php8.1-fpm
 sudo systemctl restart mysql
 sudo systemctl restart nginx
-
-# Đường dẫn mặc định tới thư mục VistaPanel
-VISTAPANEL_PATH="/var/www/vistapanel"
 
 # Tạo cơ sở dữ liệu MySQL
 mysql -u root -p <<EOF
@@ -31,7 +37,7 @@ DB_PASSWORD=Abc369852@aA
 EOT
 
 # Chạy các lệnh Artisan của Laravel
-cd $VISTAPANEL_PATH || { echo "Thư mục không tồn tại!"; exit 1; }
+cd $VISTAPANEL_PATH || { echo "Không thể chuyển đến thư mục $VISTAPANEL_PATH!"; exit 1; }
 php artisan migrate
 php artisan db:seed
 php artisan key:generate
