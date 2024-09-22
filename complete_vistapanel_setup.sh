@@ -9,16 +9,15 @@ sudo systemctl restart php8.1-fpm
 sudo systemctl restart mysql
 sudo systemctl restart nginx
 
-# Yêu cầu người dùng cung cấp đường dẫn tới thư mục VistaPanel
-read -p "Nhập đường dẫn tới thư mục VistaPanel: " VISTAPANEL_PATH
+# Đường dẫn mặc định tới thư mục VistaPanel
+VISTAPANEL_PATH="/var/www/vistapanel"
 
 # Tạo cơ sở dữ liệu MySQL
 mysql -u root -p <<EOF
 CREATE DATABASE vistapanel;
-CREATE USER 'vistapaneluser'@'localhost' IDENTIFIED BY 'yourpassword';
+CREATE USER 'vistapaneluser'@'localhost' IDENTIFIED BY 'Abc369852@aA';
 GRANT ALL PRIVILEGES ON vistapanel.* TO 'vistapaneluser'@'localhost';
 FLUSH PRIVILEGES;
-EXIT;
 EOF
 
 # Cấu hình tệp .env
@@ -28,7 +27,7 @@ DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_DATABASE=vistapanel
 DB_USERNAME=vistapaneluser
-DB_PASSWORD=yourpassword
+DB_PASSWORD=Abc369852@aA
 EOT
 
 # Chạy các lệnh Artisan của Laravel
@@ -47,13 +46,13 @@ server {
     index index.php index.html index.htm;
 
     location / {
-        try_files $uri $uri/ /index.php?$query_string;
+        try_files \$uri \$uri/ /index.php?\$query_string;
     }
 
     location ~ \.php$ {
         include snippets/fastcgi-php.conf;
         fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
         include fastcgi_params;
     }
 
@@ -67,4 +66,14 @@ EOT
 sudo ln -s /etc/nginx/sites-available/vistapanel /etc/nginx/sites-enabled/
 sudo systemctl restart nginx
 
-echo "Cài đặt và cấu hình VistaPanel hoàn tất!"
+# Xuất thông tin cài đặt vào tệp thongtin-caidat.txt
+cat <<EOT > /home/user/thongtin-caidat.txt
+Thông tin cài đặt VistaPanel:
+
+Đường dẫn tới thư mục VistaPanel: $VISTAPANEL_PATH
+Tên cơ sở dữ liệu: vistapanel
+Tên người dùng MySQL: vistapaneluser
+Mật khẩu MySQL: Abc369852@aA
+EOT
+
+echo "Cài đặt và cấu hình VistaPanel hoàn tất! Thông tin cài đặt đã được lưu vào tệp /home/user/thongtin-caidat.txt"
