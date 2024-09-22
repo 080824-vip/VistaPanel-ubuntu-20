@@ -15,11 +15,9 @@ sudo apt install -y mysql-server nginx
 
 # Khởi động lại các dịch vụ cần thiết
 sudo systemctl restart php8.1-fpm
-sudo systemctl restart mysql
-sudo systemctl restart nginx
 
-# Tạo cơ sở dữ liệu MySQL
-mysql -u root -p <<EOF
+# Tạo cơ sở dữ liệu MySQL mà không cần nhập mật khẩu
+mysql --user="root" --password="Abc369852@aA" <<EOF
 CREATE DATABASE vistapanel;
 CREATE USER 'vistapaneluser'@'localhost' IDENTIFIED BY 'Abc369852@aA';
 GRANT ALL PRIVILEGES ON vistapanel.* TO 'vistapaneluser'@'localhost';
@@ -70,7 +68,7 @@ EOT
 
 # Kích hoạt cấu hình và khởi động lại Nginx
 sudo ln -s /etc/nginx/sites-available/vistapanel /etc/nginx/sites-enabled/
-sudo systemctl restart nginx
+sudo nginx -t && sudo systemctl restart nginx
 
 # Xuất thông tin cài đặt vào tệp thongtin-caidat.txt
 cat <<EOT > /home/user/thongtin-caidat.txt
