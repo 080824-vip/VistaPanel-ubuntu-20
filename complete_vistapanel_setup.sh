@@ -1,8 +1,16 @@
 #!/bin/bash
 
+# Cài đặt MySQL và Nginx
+sudo apt update
+sudo apt install -y mysql-server nginx
+
 # Khởi động lại các dịch vụ cần thiết
 sudo systemctl restart php8.1-fpm
 sudo systemctl restart mysql
+sudo systemctl restart nginx
+
+# Yêu cầu người dùng cung cấp đường dẫn tới thư mục VistaPanel
+read -p "Nhập đường dẫn tới thư mục VistaPanel: " VISTAPANEL_PATH
 
 # Tạo cơ sở dữ liệu MySQL
 mysql -u root -p <<EOF
@@ -14,7 +22,7 @@ EXIT;
 EOF
 
 # Cấu hình tệp .env
-cat <<EOT >> /path/to/vistapanel/.env
+cat <<EOT > $VISTAPANEL_PATH/.env
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
@@ -24,18 +32,18 @@ DB_PASSWORD=yourpassword
 EOT
 
 # Chạy các lệnh Artisan của Laravel
-cd /path/to/vistapanel
+cd $VISTAPANEL_PATH
 php artisan migrate
 php artisan db:seed
 php artisan key:generate
 
 # Cấu hình Nginx
-sudo cat <<EOT >> /etc/nginx/sites-available/vistapanel
+sudo cat <<EOT > /etc/nginx/sites-available/vistapanel
 server {
     listen 80;
     server_name yourdomain.com;
 
-    root /path/to/vistapanel/public;
+    root $VISTAPANEL_PATH/public;
     index index.php index.html index.htm;
 
     location / {
