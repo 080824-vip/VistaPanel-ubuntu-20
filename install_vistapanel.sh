@@ -18,6 +18,8 @@ if [ -f /etc/php/8.1/fpm/php.ini ]; then
 fi
 
 # Khởi động lại PHP-FPM
-sudo systemctl restart php8.1-fpm
+if systemctl list-units --full -all | grep -Fq 'php8.1-fpm.service'; then
+    sudo systemctl restart php8.1-fpm
+fi
 
 echo "Cài đặt hoàn tất!"
