@@ -31,7 +31,7 @@ DB_PASSWORD=Abc369852@aA
 EOT
 
 # Chạy các lệnh Artisan của Laravel
-cd $VISTAPANEL_PATH
+cd $VISTAPANEL_PATH || { echo "Thư mục không tồn tại!"; exit 1; }
 php artisan migrate
 php artisan db:seed
 php artisan key:generate
